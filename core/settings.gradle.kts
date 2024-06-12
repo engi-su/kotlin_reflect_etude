@@ -43,4 +43,4 @@ gradleEnterprise {
 }
 
 rootProject.name = "core"
-include(":jvm-lib")
+include(":reflect-etude")
