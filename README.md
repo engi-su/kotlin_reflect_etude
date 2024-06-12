@@ -1,0 +1,1 @@
+# jvm_lib_etude_template

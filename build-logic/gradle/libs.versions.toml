@@ -1,0 +1,357 @@
+
+[versions]
+#<-----general----->
+build = "0.0.1" #version of Build Logic to provide consistency with all project using same libs.versions.toml
+java = "17" #see PS-111
+gradle = "8.7" #see /gradle/wrapper/gradle-wrapper.properties
+compile-sdk = "34" #see PS-111
+min-sdk = "29"
+
+#<-----build-logic----->
+#local.android.app && all local apps and libs && feature
+agp = "8.3.1" #android gradle plugin, see PS-111
+kotlin = "1.9.22" #see PS-111
+android-desugar-jdk-libs = "2.0.4"
+
+#local.room
+ksp = "1.9.22-1.0.17"
+room = "2.6.1"
+
+#internal.SQA
+konsist = "0.15.1"
+android-native-lint = "8.4.0"
+
+#internal.codecoverage
+jacoco = "0.8.11"
+
+#internal.detekt
+detekt = "1.23.6" #plugin
+compose-rules = "0.4.1" #nacho lopez
+
+#internal.spotless
+spotless = "6.25.0" #plugin
+ktlint = "0.49.1" #"1.2.1" #ktlint, not plugin
+
+#internal.test
+kotest = "5.9.0"
+mockk = "1.13.9"
+kotest-android = "1.1.0"
+ultron = "2.3.1"
+
+#internal.compose
+androidx-compose-compiler = "1.5.10" #see PS-111
+compose-bom = "2024.05.00" #see PS-111
+
+#internal.kover
+kover = "0.8.0" #see PS-104
+
+#build-logic functional tests
+google-truth = "1.4.2"
+autonomousapps-testkit = "1.1"
+
+#<-----core----->
+#domain
+kotlinx-datetime = "0.4.1"
+validator = "0.4.0" #TODO: rename to Konform
+arrow = "1.2.0"
+apache-commons = "3.14.0"
+uri = "0.0.15"
+
+#core
+classgraph = "class-graph-4.8.169"
+
+#=================================TO BE PROCESSED===================================================
+
+#models
+serialization-json = "1.6.3"
+
+#droid
+
+sgp = "2.0.1"
+serialization-droid = "1.9.22"
+media3 = "1.3.1"
+play-services-location = "21.2.0"
+play-services-maps = "18.2.0"
+play-services-auth = "21.1.1"
+ktx = "1.13.1"
+appcompat = "1.6.1"
+matirial = "1.12.0"
+lifecycle = "2.7.0"
+color-picker = "1.0.7"
+maps-compose = "4.3.2"
+accompanist-drawablepainter = "0.32.0"
+accompanist-permissions = "0.34.0"
+espresso = "3.5.1"
+uiautomator = "2.3.0"
+core-testing = "2.2.0"
+coroutines = "1.8.0"
+compose-destinations = "1.10.1"
+coil-compose = "2.6.0" #picture magement
+ktor = "2.3.8"
+security_crypto = "1.1.0-alpha06"
+security-crypto-datastore-preferences = "1.0.0-beta01"
+work-version = "2.9.0"
+pole-domain = "0.1.21" #TODO: Delete
+ksp-map-to = "0.0.4"
+
+#server
+
+#Our versions
+mapto = "0.0.7"
+
+
+#From NowInAndroid
+androidTools = "31.3.0"
+androidGradlePlugin = "8.4.0-rc01"
+
+dsl = "4.3.0" #kotlin dsl
+#--------------------------------END TO BE PROCESSED------------------------------------------------
+
+[libraries]
+#<-----build-logic----->
+#local.android.app && all local apps and libs && feature
+android-desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "android-desugar-jdk-libs" }
+
+#local.room
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+
+#internal.SQA
+konsist = { group = "com.lemonappdev", name = "konsist", version.ref = "konsist" }
+
+#internal.codecoverage
+
+#internal.detekt
+detekt-compose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "compose-rules"}
+
+#internal.spotless
+ktlint-compose = { group = "io.nlopez.compose.rules", name = "ktlint", version.ref = "compose-rules"}
+
+#internal.test
+kotest-runner = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
+kotest-assertion = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
+mockk  = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotest-runner-android = { group = "br.com.colman", name = "kotest-runner-android", version.ref = "kotest-android" }
+kotest-assertions-android = { group = "br.com.colman", name = "kotest-assertions-android", version.ref = "kotest-android" }
+ultron = { group = "com.atiurin", name = "ultron", version.ref = "ultron" }
+ultron-allure = { group = "com.atiurin", name = "ultron-allure", version.ref = "ultron" }
+ultron-compose = { group = "com.atiurin", name = "ultron-compose", version.ref = "ultron" }
+
+#internal.compose
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+#build-logic functional tests
+google-truth = { group = "com.google.truth", name = "truth", version.ref = "google-truth" }
+autonomousapps-testkit = { group = "com.autonomousapps", name = "testkit-truth", version.ref = "autonomousapps-testkit"}
+
+#<-----core----->
+#domain
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+konform = { module = "io.konform:konform", version.ref = "validator" }
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+arrow-fx-coroutines = { module = "io.arrow-kt:arrow-fx-coroutines", version.ref = "arrow" }
+apache-commons = { module = "org.apache.commons:commons-lang3", version.ref = "apache-commons" }
+uri = { module = "com.eygraber:uri-kmp", version.ref = "uri" }
+
+#core
+kotlin-reflect = { group = "org.jetbrains.kotlin", name = "kotlin-reflect", version.ref = "kotlin" }
+classgraph = { group = "io.github.classgraph", name = "classgraph", version.ref = "classgraph" }
+mapto = { module = "ru.polescanner.ksp:lib", version.ref = "mapto"}
+ksp-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp"}
+ksp = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+
+#=================================TO BE PROCESSED===================================================
+
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" } #https://kotlinlang.org/docs/whatsnew18.html
+kgp = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" } #kotlin-plugin
+agp = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" } #android-gradlePlugin
+
+#build-logic lint
+
+detekt = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt"}
+#ktlint = {group = "org.jlleitschuh.gradle", name = "ktlint-gradle", version.ref = "ktlint"}
+#ktlint = { group = "com.pinterest.ktlint", name = "ktlint-cli", version.ref = "ktlint" }
+#spotless = { group = "com.diffplug.spotless", name = "spotless-plugin-gradle", version.ref = "spotless" }
+
+#models
+serialization-plugin = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
+arrow-serialization = { module = "io.arrow-kt:arrow-core-serialization", version.ref = "arrow" }
+
+#droid
+media3 = { group = "androidx.media3", name = "media3-common", version.ref = "media3" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "play-services-location" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "play-services-maps" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play-services-auth" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "matirial" }
+
+activity-compose = { group = "androidx.activity", name = "activity-compose" }
+ui = { group = "androidx.compose.ui", name = "ui" }
+ui-android = { group = "androidx.compose.ui", name = "ui-android" }
+ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+
+material3 = { group = "androidx.compose.material3", name = "material3" }
+animation = { group = "androidx.compose.animation", name = "animation" }
+animation-core = { group = "androidx.compose.animation", name = "animation-core" }
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+foundation = { group = "androidx.compose.foundation", name = "foundation" }
+maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "maps-compose" }
+maps-compose-utils = { group = "com.google.maps.android", name = "maps-compose-utils", version.ref = "maps-compose" }
+maps-compose-widjets = { group = "com.google.maps.android", name = "maps-compose-widjets", version.ref = "maps-compose" }
+accompanis-drawablepainter = { group = "com.google.accompanist", name = "accompanist-drawablepainter", version.ref = "accompanist-drawablepainter" }
+lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+color-picker = { group = "com.github.skydoves", name = "colorpicker-compose", version.ref = "color-picker" }
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso" }
+uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+core-testing = { group = "android.arch.core", name = "core-testing", version.ref = "core-testing" }
+
+kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+ui-test = { group = "androidx.compose.ui", name = "ui-test" }
+ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-destinations = { group = "io.github.raamcosta.compose-destinations", name = "core", version.ref = "compose-destinations" }
+compose-destinations-ksp = { group = "io.github.raamcosta.compose-destinations", name = "ksp", version.ref = "compose-destinations" }
+
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose" }
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
+ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-ktor-client-serialization-cio = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging-jvm = { group = "io.ktor", name = "ktor-client-logging-jvm", version.ref = "ktor" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "client-content-negotiation", version.ref = "ktor" }
+ktor-client-auth = { group = "io.ktor", name = "ktor-client-auth", version.ref = "ktor" }
+ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security_crypto" }
+security-crypto-datastore-preferences = { group = "io.github.osipxd", name = "security-crypto-datastore-preferences", version.ref = "security-crypto-datastore-preferences" }
+work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work-version" }
+work-testing = { group = "androidx.work", name = "work-testing", version.ref = "work-version" }
+
+# Dependencies of NowInAndroid of the included build-logic
+
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+#--------------------------------END TO BE PROCESSED------------------------------------------------
+
+[bundles]
+#<-----build-logic----->
+#local.android.app && all local apps and libs && feature
+
+#local.room
+
+#internal.SQA
+
+#internal.codecoverage
+
+#internal.detekt
+
+#internal.spotless
+
+#internal.test
+kotest = ["kotest-runner", "kotest-assertion", "kotest-property", "mockk"]
+kotest-android = ["kotest-runner-android", "kotest-assertions-android"]
+ultron = ["ultron", "ultron-allure", "ultron-compose"]
+
+#internal.compose
+
+#build-logic functional tests
+
+#<-----core----->
+#domain
+arrow = ["arrow-core", "arrow-fx-coroutines"]
+validation = ["konform", "apache-commons"]
+
+#=================================TO BE PROCESSED===================================================
+
+#detekt = ["detekt", "detekt-compose"]
+
+serialization = ["serialization", "arrow-serialization"]
+mapto = ["ksp", "mapto"]
+#--------------------------------END TO BE PROCESSED------------------------------------------------
+
+[plugins]
+#<-----build-logic----->
+#local.android.app
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" } #jetbrainsKotlinAndroid
+
+#local.android.lib && feature
+android-library = { id = "com.android.library", version.ref = "agp" }
+
+#local.jvm.app && local.jvm.lib
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+#local.room
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+room = { id = "androidx.room",  version.ref = "room" }
+
+#internal.SQA
+android-native-lint = { id = "com.android.lint", version.ref = "android-native-lint" }
+
+#internal.codecoverage
+
+#internal.detekt
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+
+#internal.spotless
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+
+#internal.test
+
+#internal.compose
+
+#internal.kover
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+
+#build-logic functional tests
+
+#=================================TO BE PROCESSED===================================================
+
+kotlin-dsl = { id = "org.gradle.kotlin.kotlin-dsl", version.ref = "dsl" }
+
+android-test = { id = "com.android.test", version.ref = "agp" }
+
+#build-logic lint
+
+#ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint"}
+
+
+
+#local-detekt = { id = "local.detekt", version = "unspecified" }
+#local-spotless = { id = "local.spotless", version = "unspecified" }
+
+#local-sqa = { id = "local.sqa", version = "unspecified" }
+#local-code-coverage = { id = "local.code.coverage", version = "unspecified" }
+
+#models
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+#droid
+
+sgp = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "sgp" }
+droidSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization-droid" }
+
+
+#--------------------------------END TO BE PROCESSED------------------------------------------------
+#<-----LOCAL PLUGINS TO BE APPLIED----->
+local-android-app = { id = "local.android.app", version = "unspecified" }
+local-android-lib = { id = "local.android.lib", version = "unspecified" }
+local-compose-lib = { id = "local.compose.lib", version = "unspecified" }
+local-feature = { id = "local.feature", version = "unspecified" }
+local-jvm-app = { id = "local.jvm.app", version = "unspecified" }
+local-jvm-lib = { id = "local.jvm.lib", version = "unspecified" }
+local-room = { id = "local.room", version = "unspecified" }
+
+
+
+
+
