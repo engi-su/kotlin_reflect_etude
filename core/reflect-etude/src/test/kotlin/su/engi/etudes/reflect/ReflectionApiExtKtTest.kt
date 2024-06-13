@@ -2,13 +2,17 @@ package su.engi.etudes.reflect
 
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
+import io.kotest.matchers.reflection.shouldBeOfType
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
+import io.kotest.matchers.types.shouldBeTypeOf
+import kotlin.reflect.KProperty1
 
 data class Simple(val str: String, val int: Int)
 data class Parametrized<E> (val value: E)
 
-data class Parametrized2<E> (val value: List<E>)
+data class Parametrized2<E> (val value: E)
 
 @JvmInline value class Name(val value: String)
 class ReflectionApiExtKtTest : ShouldSpec({
@@ -57,4 +61,59 @@ class ReflectionApiExtKtTest : ShouldSpec({
             sut.value.value shouldBe "Bye bye"
         }
     }
+
+    context ("read instance property"){
+        should("read star projection"){
+            data class Simple (val projected: Parametrized<String>)
+            val s = Simple(Parametrized("Hello"))
+
+            val sut = readInstanceProperty<Parametrized<*>>(s,"projected")
+            sut.value shouldBe "Hello"
+        }
+    }
+
+    should("return properties"){
+        data class Simple (val one: Parametrized<String>,
+                           val two: Parametrized<Int>,
+                           val three: Int)
+        val s = Simple(Parametrized("Hello"),
+                       Parametrized(42),
+                       24
+        )
+        val sut = getAllPropertiesOfType<Parametrized<*>>(s)
+
+        sut.size shouldBe 2
+        val sut2 = getAllPropertiesOfType2<Parametrized<*>>(s)
+        sut2.size shouldBe 2
+        sut2[0].shouldBeTypeOf<KProperty1<Any, Parametrized<*>>>()
+        //@Suppress("UNCHECKED_CAST")
+        //(sut2[0] as KProperty1<Any, Parametrized<*>>).get(s)
+    }
+    should("return names"){
+        data class Simple (val one: Parametrized<String>,
+                           val two: Parametrized<Int>,
+                           val three: Int)
+        val s = Simple(Parametrized("Hello"),
+                       Parametrized(42),
+                       24
+        )
+        val sut = getAllPropertyNamesOfType<Parametrized<*>>(s)
+        sut.size shouldBe 2
+        sut shouldContainExactlyInAnyOrder listOf("two", "one")
+    }
+
+    should("copy with new values"){
+        data class Simple2 (val one: Parametrized<String>,
+                           val two: Parametrized<Int>,
+                           val three: Int)
+        val s = Simple2(Parametrized("Hello"),
+                       Parametrized(42),
+                       24
+        )
+        val sut = s.copyAllWithNewValue<Parametrized<*>, Simple2>(listOf(Parametrized("GoodBy"), Parametrized(24)))
+
+        sut.one.value shouldBe "GoodBy"
+        sut.two.value shouldBe 24
+    }
+
 })

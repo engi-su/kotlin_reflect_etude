@@ -1,18 +1,14 @@
 package su.engi.etudes.reflect
 
-import kotlin.reflect.KProperty
-import kotlin.reflect.KProperty1
-import kotlin.reflect.full.instanceParameter
-import kotlin.reflect.full.memberFunctions
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.full.primaryConstructor
+import kotlin.reflect.*
+import kotlin.reflect.full.*
 
 /**
  * A function to read a property from an instance of a class given the property name
  * throws exception if property not found
  * ### Example:
  * ```
- * readInstanceProperty<Int>(sample, "age")
+ * sample.readInstanceProperty<Int>("age")
  * ```
  * requires: kotlin reflection
  * @throws exception if property not found
@@ -70,7 +66,7 @@ fun <T : Any> T.copyDataObject(vararg properties: Pair<KProperty<*>, Any?>): T {
     return copyFunction.callBy(parameters) as T
 }
 
-fun <D: Any> D.primaryConstructorPropertiesWithValues(): Map<KProperty1<D, *>, Any?> {
+/*fun <D: Any> D.primaryConstructorPropertiesWithValues(): Map<KProperty1<D, *>, Any?> {
     val dataClass = this::class
     require(dataClass.isData) { "It is working only for data class" }
     val propertyNames = dataClass.primaryConstructor!!.parameters.map{ it.name }
@@ -81,4 +77,40 @@ fun <D: Any> D.primaryConstructorPropertiesWithValues(): Map<KProperty1<D, *>, A
     val result = buildMap<KProperty1<D,*>, Any?> {
 
     }
+}*/
+@Suppress("UNCHECKED_CAST")
+inline fun <reified R : Any> getAllPropertiesOfType(instance: Any): List<KParameter> {
+    val dataClass = instance::class
+    require(dataClass.isData) { "instance must be a data class" }
+    val properties = dataClass.primaryConstructor!!.parameters.filter{ it.type.classifier as KClass<R> == R::class}
+    @Suppress("UNCHECKED_CAST")
+    return properties
 }
+@Suppress("UNCHECKED_CAST")
+inline fun <reified R: Any> getAllPropertyNamesOfType(instance: Any): List<String> {
+    val dataClass = instance::class
+    require(dataClass.isData) { "instance must be a data class" }
+    val properties = dataClass.primaryConstructor!!.parameters.filter{ it.type.classifier as KClass<R> == R::class}
+
+    return properties.map{ it.name!! }
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <reified R : Any> getAllPropertiesOfType2(instance: Any): List<KProperty1<Any, *>> {
+    val dataClass = instance::class
+    require(dataClass.isData) { "instance must be a data class" }
+    val properties = dataClass.memberProperties.filter{ it.returnType.classifier as KClass<R> == R::class}
+    @Suppress("UNCHECKED_CAST")
+    return properties.map{ it as KProperty1<Any, R> }
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <reified R : Any, T: Any> T.copyAllWithNewValue(newValues: List<Any>): T {
+    val dataClass = this::class
+    require(dataClass.isData) { "instance must be a data class" }
+    val properties = dataClass.memberProperties.filter{ it.returnType.classifier as KClass<R> == R::class}
+    @Suppress("UNCHECKED_CAST")
+    val propArray = properties.zip(newValues){p,v -> p to v }.toTypedArray()
+    return this.copyDataObject( *propArray)
+}
+
