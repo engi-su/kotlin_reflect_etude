@@ -7,7 +7,9 @@ import io.kotest.matchers.reflection.shouldBeOfType
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.types.shouldBeTypeOf
+import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
+import kotlin.reflect.full.declaredMembers
 
 data class Simple(val str: String, val int: Int)
 data class Parametrized<E> (val value: E)
@@ -110,10 +112,16 @@ class ReflectionApiExtKtTest : ShouldSpec({
                        Parametrized(42),
                        24
         )
-        val sut = s.copyAllWithNewValue<Parametrized<*>, Simple2>(listOf(Parametrized("GoodBy"), Parametrized(24)))
+        val sut = s.copyAllWithNewValue<Parametrized<*>, Simple2>(Parametrized("GoodBy"), Parametrized(24))
 
         sut.one.value shouldBe "GoodBy"
         sut.two.value shouldBe 24
+
+        /*data class Minor(val one: Int)
+        val m = Minor (24)
+        @Suppress("UNCHECKED_CAST")
+        val f = m::class.declaredMembers.first().let{ it.returnType.classifier as KClass<String> }
+        println("class ==== $f")*/
     }
 
 })

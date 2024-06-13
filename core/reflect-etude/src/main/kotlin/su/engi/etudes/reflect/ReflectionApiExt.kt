@@ -104,13 +104,36 @@ inline fun <reified R : Any> getAllPropertiesOfType2(instance: Any): List<KPrope
     return properties.map{ it as KProperty1<Any, R> }
 }
 
-@Suppress("UNCHECKED_CAST")
-inline fun <reified R : Any, T: Any> T.copyAllWithNewValue(newValues: List<Any>): T {
-    val dataClass = this::class
-    require(dataClass.isData) { "instance must be a data class" }
-    val properties = dataClass.memberProperties.filter{ it.returnType.classifier as KClass<R> == R::class}
-    @Suppress("UNCHECKED_CAST")
-    val propArray = properties.zip(newValues){p,v -> p to v }.toTypedArray()
+fun <R: Any, T: Any> T.copyDataInstanceWithUpdatedPropertiesOfType(type: KClass<R>, newValues: List<Any>){
+
+}
+/**
+ * The values updater - returns instance with updated properties of the particular type with provided new values.
+ * **Important:** no parameter type check for new values is applied, either not quantity of new values check
+ * ### Example:
+ * ```kotlin
+ * val old = BirthBook (names = listOf("Ann", "Susan"),
+ *                      years = listOf(1999, 2007),
+ *                      approved = true
+ *                      )
+ * val new = old.copyAllWithNewValue(listOf("Andrey"), listOf(2000))
+ * new.names[0] == "Andrey" // True
+ * ```
+ * @receiver [T] generic of the data class
+ * @param [R] generic of particular type to find properties
+ * @param [newValues] new values for [T] properties of type [R]
+ * @return new instance of the same data class [T] *
+ * @throws exception if receiver is not a data class
+ */
+inline fun <reified R : Any, T: Any> T.copyAllWithNewValue(vararg newValues: Any): T {
+
+    val properties = this::class.memberProperties.filter{ it.returnType.classifier == R::class}
+
+    val propArray = properties.zip(newValues){p, v ->
+        /*val interest = v::class.members.first { it.name == p.name } as KProperty1<Any, *>
+        require(p.returnType.arguments.map{it.type!!.classifier} == v::class.typeParameters.map{it.javaClass}){
+            "type mismatch ${p.returnType.arguments.map{it.type!!.classifier}}  ${v::class.typeParameters.map{it.createType()}}"}*/
+        p to v }.toTypedArray()
     return this.copyDataObject( *propArray)
 }
 
