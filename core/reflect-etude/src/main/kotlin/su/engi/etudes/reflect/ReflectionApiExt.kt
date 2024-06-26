@@ -28,8 +28,8 @@ fun <R> readInstanceProperty(instance: Any, propertyName: String): R {
  * of data class passing specific property values like you can do when calling copy directly:
  * ### Example:
  * ```
- * val person = Person("Jane", 7, Sex.FEMALE)
- * val copy = person.copyDataObject(
+ * val daughter = Person(Person("Jane", 7, Sex.FEMALE)
+ * val grandfather = person.copyDataObject(
  *      person::name to "Jack",
  *      person::age to 93,
  *      person::sex to Sex.MALE
@@ -116,7 +116,7 @@ fun <R: Any, T: Any> T.copyDataInstanceWithUpdatedPropertiesOfType(type: KClass<
  *                      years = listOf(1999, 2007),
  *                      approved = true
  *                      )
- * val new = old.copyAllWithNewValue(listOf("Andrey"), listOf(2000))
+ * val new = old.updatePropertiesOfType<List<*>, BirthBook>(listOf("Andrey"), listOf(2000))
  * new.names[0] == "Andrey" // True
  * ```
  * @receiver [T] generic of the data class
@@ -125,7 +125,7 @@ fun <R: Any, T: Any> T.copyDataInstanceWithUpdatedPropertiesOfType(type: KClass<
  * @return new instance of the same data class [T] *
  * @throws exception if receiver is not a data class
  */
-inline fun <reified R : Any, T: Any> T.copyAllWithNewValue(vararg newValues: Any): T {
+inline fun <reified R : Any, T: Any> T.updatePropertiesOfType(vararg newValues: Any): T {
 
     val properties = this::class.memberProperties.filter{ it.returnType.classifier == R::class}
 
@@ -137,3 +137,43 @@ inline fun <reified R : Any, T: Any> T.copyAllWithNewValue(vararg newValues: Any
     return this.copyDataObject( *propArray)
 }
 
+fun <T: Any> T.updatePropertyOfName(name: String, newValue: Any): T {
+    val property = this::class.memberProperties.first{ it.name == name }
+    return this.copyDataObject( property to newValue)
+}
+
+
+/*inline fun <reified R: Any> KProperty0<R>.updateDataClassValue(name: String, newValue: Any): KProperty0<R> {
+    @Suppress("UNCHECKED_CAST")
+    val dataClass = this.returnType.classifier as KClass<R>
+    require(dataClass.isData) { "instance must be a data class" }
+    val outerInstance = this.instanceParameter
+    val inst = this.get()
+    val prop = dataClass.memberProperties.find{it.name == name}
+    val newInstance = inst.updatePropertyOfName(name, newValue)
+
+}*/
+
+fun <T: Any> T.allPropertiesWithValuesAsString(): String {
+    val dataClass = this::class
+    require(dataClass.isData) { "instance must be a data class" }
+    val properties = dataClass.primaryConstructor!!.parameters.map{it.name}
+    val propsAndValues = properties.filterNotNull().map{ it to instancePropertyAsString(this, it)}
+    return propsAndValues.joinToString(separator = ", ") { "${it.first}: ${it.second}" }
+}
+
+/*
+
+when (val type = kClass.memberProperties.find {it.name == name}!!.returnType) {
+    ValidOrFocusedAtCheck::class.createType(type.arguments) ->
+    readInstanceProperty<ValidOrFocusedAtCheck<*>>(this, name)
+    else -> throw IllegalArgumentException(
+    "not applicable type of the field. Only ${ValidOrFocusedAtCheck::class.simpleName} supported"
+    )
+}*/
+@Suppress("UNCHECKED_CAST")
+fun instancePropertyAsString(instance: Any, propertyName: String): String {
+    val property = instance::class.members
+        .first { it.name == propertyName } as KProperty1<Any, *>
+    return property.get(instance).toString()
+}

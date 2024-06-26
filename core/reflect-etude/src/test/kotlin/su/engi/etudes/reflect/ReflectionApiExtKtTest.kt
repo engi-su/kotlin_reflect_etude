@@ -3,13 +3,10 @@ package su.engi.etudes.reflect
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
-import io.kotest.matchers.reflection.shouldBeOfType
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.types.shouldBeTypeOf
-import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
-import kotlin.reflect.full.declaredMembers
 
 data class Simple(val str: String, val int: Int)
 data class Parametrized<E> (val value: E)
@@ -112,7 +109,7 @@ class ReflectionApiExtKtTest : ShouldSpec({
                        Parametrized(42),
                        24
         )
-        val sut = s.copyAllWithNewValue<Parametrized<*>, Simple2>(Parametrized("GoodBy"), Parametrized(24))
+        val sut = s.updatePropertiesOfType<Parametrized<*>, Simple2>(Parametrized("GoodBy"), Parametrized(24))
 
         sut.one.value shouldBe "GoodBy"
         sut.two.value shouldBe 24
